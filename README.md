@@ -59,7 +59,8 @@ how it compared to simply buying and holding the S&P 500 index for those 90 days
 ### Phase 3 — Live Decisions (Every Hour)
 
 Once the practice test is done, the bot wakes up every hour during market hours
-(9 AM – 4 PM Eastern, Monday through Friday). For each stock it watches, it
+(first cycle at 10 AM Eastern to ensure the 9:30 opening bar is complete, through
+4 PM Eastern, Monday through Friday excluding market holidays). For each stock it watches, it
 looks at the latest price data, runs it through its learned playbook, and decides
 whether to buy, sell, or hold. Every decision is printed to the screen with a
 full explanation.
@@ -301,8 +302,8 @@ During **studying**, you see progress updates every epoch (training round):
 ```
 [TRAIN] Starting historical pre-training: 2024-04-22 → 2026-01-26
 [TRAIN] Fetched 4,820 hourly bars for AAPL
-[TRAIN] Epoch 1/50 | Reward: 0.0842 | Exploration: 50.0%
-[TRAIN] Epoch 2/50 | Reward: 0.1203 | Exploration: 49.5%
+[TRAIN] Epoch 1/50 | Reward: 0.0842 | rar: 0.5000
+[TRAIN] Epoch 2/50 | Reward: 0.1203 | rar: 0.4990
 ...
 [TRAIN] Training complete. Epochs: 38 | Final reward: 0.4871 | Elapsed: 14.2s
 ```
@@ -339,7 +340,7 @@ relative to the existing three.
 
 | Limitation | Why |
 |---|---|
-| Maximum 730 days of training history | Yahoo Finance only provides hourly data that far back |
+| Maximum 730 days of training history (configured at 600 days) | Yahoo Finance caps hourly interval data at 730 calendar days |
 | Training takes a few minutes on first run | The bot studies thousands of hourly bars across many stocks |
 | No real trades are placed | Brokerage connection is not built yet |
 | The bot does not read news or earnings | Only price-based signals at this stage |

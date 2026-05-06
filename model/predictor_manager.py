@@ -72,11 +72,13 @@ class PredictorManager:
 
     def record_accuracy(self, prices: pd.Series, realized_return: float) -> None:
         """
-        Append a 1.0 or 0.0 to each predictor's accuracy_history based on
-        whether its vote matched the direction of the realised return.
+        Append a score to each predictor's accuracy_history based on whether its
+        vote matched the direction of the realised return.
 
-        A neutral vote (0) is recorded as incorrect (0.0) since the predictor
-        gave no actionable signal. This encourages predictors to take a stance.
+        Neutral votes (0) score 0.5 — treated as abstentions, neither rewarded nor
+        penalised. Recording 0.0 for neutral would push all predictors to always take
+        a stance, causing overtrading during the sideways conditions that dominate
+        hourly markets 60–70% of the time.
 
         Args:
             prices: Close price Series used to compute each predictor's vote.
@@ -85,11 +87,10 @@ class PredictorManager:
         for p in self._predictors.values():
             val = float(p.compute(prices).iloc[-1])
             vote = p.signal(val)
-            correct = (
-                1.0
-                if vote != 0 and (vote > 0) == (realized_return > 0)
-                else 0.0
-            )
+            if vote == 0:
+                correct = 0.5  # abstention — no information, no penalty
+            else:
+                correct = 1.0 if (vote > 0) == (realized_return > 0) else 0.0
             p.record_accuracy(correct)
 
     # ------------------------------------------------------------------

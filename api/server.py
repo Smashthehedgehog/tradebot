@@ -186,7 +186,7 @@ def post_retrain(body: RetrainRequest) -> dict:
 
     thread = threading.Thread(target=_retrain, daemon=True, name="retrain-thread")
     thread.start()
-    logger.info("post_retrain: retrain thread started for %s → %s", body.train_start, body.train_end)
+    logger.info("post_retrain: retrain thread started for %s -> %s", body.train_start, body.train_end)
     return {"status": "retraining_started"}
 
 

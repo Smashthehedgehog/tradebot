@@ -9,12 +9,13 @@ import uvicorn
 
 import config
 from api.server import app, init as api_init
-from backtest.runner import run_backtest
+from backtest.runner import run_backtest, run_walk_forward
 from engine.scheduler import TradingScheduler
 from engine.trading_engine import TradingEngine
 from indicators.technical import (
     BollingerPercentBPredictor,
     MACDHistogramPredictor,
+    RSIPredictor,
     SMARatioPredictor,
 )
 from model.predictor_manager import PredictorManager
@@ -47,7 +48,9 @@ def _configure_logging() -> None:
     )
     file_handler.setFormatter(fmt)
 
-    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler = logging.StreamHandler(
+        open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, closefd=False)
+    )
     stream_handler.setFormatter(fmt)
 
     root = logging.getLogger()
@@ -96,6 +99,15 @@ def _parse_args() -> argparse.Namespace:
         metavar="YYYY-MM-DD",
         help="Override training end date (defaults to today minus BACKTEST_DAYS).",
     )
+    parser.add_argument(
+        "--walk-forward",
+        action="store_true",
+        default=False,
+        help=(
+            "Replace the single backtest with 4-fold anchored walk-forward validation. "
+            "Implies --backtest-only: exits after printing fold results."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -104,8 +116,8 @@ def _compute_date_windows(args: argparse.Namespace) -> tuple[str, str, str, str]
     Compute training and backtest date windows, applying CLI overrides where provided.
 
     Default windows (always relative to today):
-      Training  : today − TRAIN_LOOKBACK_DAYS  →  today − BACKTEST_DAYS
-      Backtest  : today − BACKTEST_DAYS         →  today
+      Training  : today − TRAIN_LOOKBACK_DAYS  ->  today − BACKTEST_DAYS
+      Backtest  : today − BACKTEST_DAYS         ->  today
 
     Warns if the resolved train_start is more than TRAIN_LOOKBACK_DAYS ago, since
     yfinance caps hourly history at 730 days.
@@ -161,6 +173,14 @@ def main() -> None:
     _configure_logging()
     logger = logging.getLogger(__name__)
 
+    # Install email handler for ERROR-level log records (no-ops if email not configured)
+    from notifications.emailer import EmailErrorHandler
+    email_handler = EmailErrorHandler(level=logging.ERROR)
+    email_handler.setFormatter(
+        logging.Formatter("%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+    )
+    logging.getLogger().addHandler(email_handler)
+
     logger.info("main: trading bot starting up")
 
     # ------------------------------------------------------------------
@@ -170,6 +190,7 @@ def main() -> None:
         SMARatioPredictor(),
         BollingerPercentBPredictor(),
         MACDHistogramPredictor(),
+        RSIPredictor(),
     ]
     manager = PredictorManager(predictors)
     encoder = StateEncoder(config.NUM_BINS)
@@ -197,7 +218,7 @@ def main() -> None:
     # ------------------------------------------------------------------
     train_start, train_end, backtest_start, backtest_end = _compute_date_windows(args)
     logger.info(
-        "main: training window %s → %s | backtest window %s → %s",
+        "main: training window %s -> %s | backtest window %s -> %s",
         train_start,
         train_end,
         backtest_start,
@@ -219,8 +240,18 @@ def main() -> None:
             print("[STARTUP] Warm start — skipping training")
 
     # ------------------------------------------------------------------
-    # Step 6 — Backtest
+    # Step 6 — Backtest (single-fold or walk-forward)
     # ------------------------------------------------------------------
+    if not engine.is_trained:
+        logger.error("main: training did not complete — skipping backtest and exiting")
+        return
+
+    if args.walk_forward:
+        logger.info("main: --walk-forward flag set — running 4-fold walk-forward validation")
+        run_walk_forward(engine, train_start, backtest_end)
+        logger.info("main: walk-forward complete — exiting")
+        return
+
     run_backtest(engine, backtest_start, backtest_end)
 
     # ------------------------------------------------------------------

@@ -143,6 +143,8 @@ class PortfolioTracker:
         for date in dates:
             while history_idx < len(sorted_history):
                 trade_ts = pd.Timestamp(sorted_history[history_idx]["timestamp"])
+                if trade_ts.tzinfo is None:
+                    trade_ts = trade_ts.tz_localize("UTC")
                 if trade_ts.normalize() <= date.normalize():
                     cash = sorted_history[history_idx]["cash_after"]
                     holdings = dict(sorted_history[history_idx]["holdings_snapshot"])

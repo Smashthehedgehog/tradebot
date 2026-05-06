@@ -4,6 +4,62 @@ import config
 from indicators.base import BasePredictor
 
 
+class RSIPredictor(BasePredictor):
+    """
+    Relative Strength Index: measures momentum exhaustion via average gain vs
+    average loss over a rolling window. Values near 100 = overbought; near 0 = oversold.
+
+    RSI complements MACD (which is lagging) by catching intraday reversals faster,
+    and pairs with Bollinger %B to provide both price-envelope and momentum signals.
+    """
+
+    def compute(self, prices: pd.Series) -> pd.Series:
+        """
+        Compute RSI(RSI_WINDOW) for every bar using Wilder's smoothing.
+
+        Uses ewm(alpha=1/RSI_WINDOW, adjust=False) to match the canonical Wilder
+        smoothing definition. NaN values produced at the first bar (no prior diff)
+        are forward-filled so downstream code never sees NaN.
+
+        Args:
+            prices: Close price Series with a DatetimeIndex.
+
+        Returns:
+            Series of RSI values in [0, 100], same length as prices.
+        """
+        delta = prices.diff()
+        gain = delta.clip(lower=0)
+        loss = (-delta).clip(lower=0)
+        alpha = 1.0 / config.RSI_WINDOW
+        avg_gain = gain.ewm(alpha=alpha, adjust=False).mean()
+        avg_loss = loss.ewm(alpha=alpha, adjust=False).mean()
+        rs = avg_gain / avg_loss.replace(0, float("inf"))
+        rsi = 100.0 - (100.0 / (1.0 + rs))
+        # ffill handles any mid-series NaNs; fillna(50) covers the first bar
+        # where diff() is undefined — 50 is the neutral RSI midpoint.
+        return rsi.ffill().fillna(50.0)
+
+    def signal(self, value: float) -> int:
+        """
+        Map an RSI value to a discrete vote.
+
+        Thresholds: RSI < 35 → bullish (oversold momentum exhaustion, reversal likely);
+                    RSI > 65 → bearish (overbought, pullback likely);
+                    otherwise → neutral.
+
+        Args:
+            value: A single RSI float in [0, 100].
+
+        Returns:
+            +1, -1, or 0.
+        """
+        if value < 35:
+            return 1
+        if value > 65:
+            return -1
+        return 0
+
+
 class SMARatioPredictor(BasePredictor):
     """
     Measures whether the current price is unusually high or low relative to

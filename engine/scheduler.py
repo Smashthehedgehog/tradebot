@@ -14,7 +14,7 @@ _ET = ZoneInfo("America/New_York")
 class TradingScheduler:
     """
     Wraps APScheduler to fire engine.run_cycle() on a fixed interval, but only
-    during market hours on weekdays.
+    during actual market hours on trading days (excluding US market holidays).
     """
 
     def __init__(self, engine) -> None:
@@ -33,8 +33,8 @@ class TradingScheduler:
 
         The job fires every SCHEDULE_INTERVAL_MINUTES minutes. Each firing
         calls is_market_hours() first and silently returns if the market is
-        closed, so the scheduler can run continuously without any external
-        cron management.
+        closed or it is a holiday, so the scheduler can run continuously
+        without any external cron management.
         """
         self._scheduler.add_job(
             self._conditional_cycle,
@@ -58,20 +58,46 @@ class TradingScheduler:
 
     def is_market_hours(self) -> bool:
         """
-        Return True if the current US/Eastern time falls within market hours
-        on a weekday (Monday–Friday, MARKET_OPEN_HOUR to MARKET_CLOSE_HOUR).
+        Return True if the NYSE is currently open, accounting for weekends,
+        market holidays, and early-close days.
 
-        Does not account for market holidays; those will result in a cycle that
-        fetches data and finds no new bars, which is handled gracefully by the
-        engine's fetch_latest_bar logic.
+        Uses pandas_market_calendars to query the official NYSE schedule.
+        Falls back to the simple weekday + hour check if the library raises,
+        so a missing dependency never silently prevents live trading.
 
         Returns:
             True if the market is currently open, False otherwise.
         """
         now = datetime.now(tz=_ET)
-        if now.weekday() >= 5:  # Saturday=5, Sunday=6
-            return False
-        return config.MARKET_OPEN_HOUR <= now.hour < config.MARKET_CLOSE_HOUR
+        try:
+            import pandas_market_calendars as mcal
+            nyse = mcal.get_calendar("NYSE")
+            today_str = now.strftime("%Y-%m-%d")
+            schedule = nyse.schedule(start_date=today_str, end_date=today_str)
+            if schedule.empty:
+                return False  # weekend or holiday
+            import pytz
+            et = pytz.timezone("US/Eastern")
+            market_open = schedule.iloc[0]["market_open"].tz_convert(et)
+            market_close = schedule.iloc[0]["market_close"].tz_convert(et)
+            # Convert now to pytz-aware for comparison
+            now_pytz = datetime.now(tz=et)
+            return market_open <= now_pytz <= market_close
+        except ImportError:
+            logger.warning(
+                "scheduler: pandas_market_calendars not installed — "
+                "falling back to simple weekday/hour check (no holiday awareness)"
+            )
+            if now.weekday() >= 5:
+                return False
+            return config.MARKET_OPEN_HOUR <= now.hour < config.MARKET_CLOSE_HOUR
+        except Exception as exc:
+            logger.warning(
+                "scheduler: calendar lookup failed (%s) — falling back to simple check", exc
+            )
+            if now.weekday() >= 5:
+                return False
+            return config.MARKET_OPEN_HOUR <= now.hour < config.MARKET_CLOSE_HOUR
 
     def _conditional_cycle(self) -> None:
         """

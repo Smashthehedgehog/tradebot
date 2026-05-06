@@ -17,7 +17,7 @@ from portfolio.tracker import PortfolioTracker
 
 logger = logging.getLogger(__name__)
 
-# Map holding shares → holding index used by the state encoder
+# Map holding shares -> holding index used by the state encoder
 _HOLDING_IDX = {True: 1, False: 0}  # long=1, flat/short=0 (simplified for live)
 
 
@@ -79,7 +79,7 @@ class TradingEngine:
             train_start: Start date string "YYYY-MM-DD" (inclusive).
             train_end: End date string "YYYY-MM-DD" (exclusive).
         """
-        print(f"[TRAIN] Starting historical pre-training: {train_start} → {train_end}")
+        print(f"[TRAIN] Starting historical pre-training: {train_start} -> {train_end}")
         t0 = time.time()
 
         # Step 1: Fetch price data
@@ -143,6 +143,18 @@ class TradingEngine:
             f" Epochs: {epoch} | Final reward: {best_reward:.4f} | Elapsed: {elapsed:.1f}s"
         )
 
+        from notifications.emailer import send_email
+        send_email(
+            subject="[TradingBot] Training Complete",
+            body=(
+                f"Training complete.\n"
+                f"Window:       {train_start} -> {train_end}\n"
+                f"Epochs:       {epoch}\n"
+                f"Final reward: {best_reward:.4f}\n"
+                f"Elapsed:      {elapsed:.1f}s"
+            ),
+        )
+
     def _run_epoch(
         self,
         price_data: dict[str, pd.DataFrame],
@@ -184,11 +196,12 @@ class TradingEngine:
             action = self.learner.querysetstate(state)
 
             for t in range(len(ind_df) - 1):
-                # Determine target position from action
+                # Long-only mode: action 1 = go long, action 2 = go flat (exit),
+                # action 0 = hold current position. Matches live decide() exactly.
                 if action == 1:
                     new_position = 1
                 elif action == 2:
-                    new_position = -1
+                    new_position = 0   # exit to flat, not short
                 else:
                     new_position = position
 
@@ -205,13 +218,8 @@ class TradingEngine:
                 total_reward += reward
                 position = new_position
 
-                # Map position to holding index
-                if position == 0:
-                    holding_idx = 0
-                elif position > 0:
-                    holding_idx = 1
-                else:
-                    holding_idx = 2
+                # Long-only: 0 = flat, 1 = long (no short state)
+                holding_idx = 1 if position > 0 else 0
 
                 next_ind_vals = {col: float(ind_df[col].iloc[t + 1]) for col in ind_df.columns}
                 next_state = self.encoder.encode(next_ind_vals, holding_idx)
@@ -265,7 +273,7 @@ class TradingEngine:
             train_start: Start date string "YYYY-MM-DD".
             train_end: End date string "YYYY-MM-DD".
         """
-        print(f"[RETRAIN] Retraining from scratch on {train_start} → {train_end}")
+        print(f"[RETRAIN] Retraining from scratch on {train_start} -> {train_end}")
         self.encoder.reset()
         self.learner.reset()
         self.is_trained = False
@@ -292,9 +300,9 @@ class TradingEngine:
         any randomness or Q-table updates.
 
         Action mapping:
-          0 → HOLD  (keep current position, 0 shares traded)
-          1 → BUY   (buy TRADE_UNIT shares if below MAX_POSITION_SHARES)
-          2 → SELL  (sell all held shares; no short-selling in live mode)
+          0 -> HOLD  (keep current position, 0 shares traded)
+          1 -> BUY   (buy TRADE_UNIT shares if below MAX_POSITION_SHARES)
+          2 -> SELL  (sell all held shares; no short-selling in live mode)
 
         Args:
             symbol: Ticker symbol to decide for.
@@ -351,6 +359,9 @@ class TradingEngine:
             logger.warning("run_cycle: model not trained — skipping cycle")
             return
 
+        cycle_trade_count_before = sum(
+            1 for h in self.tracker.history if h["action"] != "HOLD"
+        )
         current_prices: dict[str, float] = {}
 
         for symbol in self.symbols:
@@ -396,3 +407,30 @@ class TradingEngine:
         total = self.tracker.portfolio_value(current_prices)
         ts = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         print(f"[CYCLE] {ts} ET | Portfolio: ${total:,.2f}")
+
+        # Build cycle summary for email
+        new_trades = [
+            h for h in self.tracker.history
+            if h["action"] != "HOLD"
+        ][cycle_trade_count_before:]
+        weights = self.manager.get_weights()
+        weights_str = "  ".join(
+            f"{k.replace('Predictor', '')}={v:.3f}" for k, v in weights.items()
+        )
+        trades_str = (
+            "\n".join(
+                f"  {t['symbol']} {t['action']} {t['shares']} @ ${t['price']:.2f}"
+                for t in new_trades
+            )
+            if new_trades else "  (no trades this cycle)"
+        )
+        from notifications.emailer import send_email
+        send_email(
+            subject=f"[TradingBot] Cycle {ts}",
+            body=(
+                f"Cycle complete: {ts}\n"
+                f"Portfolio: ${total:,.2f}\n\n"
+                f"Trades:\n{trades_str}\n\n"
+                f"Weights: {weights_str}"
+            ),
+        )
