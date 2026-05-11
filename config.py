@@ -7,7 +7,28 @@ from dotenv import dotenv_values
 _env = dotenv_values()
 
 # --- Symbols ---
-SYMBOLS: list[str] = ["AAPL", "MSFT", "GOOG"]  # Stocks the model trades
+SYMBOLS: list[str] = [
+    "TSLA",  # Tesla — high beta, frequent intraday swings
+    "NVDA",  # Nvidia — AI-driven volatility, large moves on news
+    "AMD",   # Advanced Micro Devices — leveraged to chip cycle
+    "MSTR",  # MicroStrategy — Bitcoin proxy, extreme daily range
+    "COIN",  # Coinbase — crypto-correlated, wide spreads
+    "PLTR",  # Palantir — sentiment-driven, retail-heavy
+    "RIVN",  # Rivian — EV speculation, thin float
+    "GME",   # GameStop — meme stock, unpredictable spikes
+    "SMCI",  # Super Micro Computer — volatile AI infrastructure play
+    "UPST",  # Upstart — earnings-sensitive, high short interest
+    "RIOT",  # Riot Platforms — Bitcoin mining proxy
+    "MARA",  # Marathon Digital — Bitcoin mining proxy
+    "HOOD",  # Robinhood — retail sentiment indicator
+    "SOFI",  # SoFi Technologies — fintech momentum stock
+    "RKLB",  # Rocket Lab — space sector, low float
+    "IONQ",  # IonQ — quantum computing speculation
+    "SOUN",  # SoundHound AI — AI hype driven, small cap
+    "SNAP",  # Snap — ad revenue sensitive, large gap moves
+    "LCID",  # Lucid Motors — EV speculation, retail favourite
+    "WOLF",  # Wolfspeed — semiconductor cycle, high short interest
+]  # Stocks the model trades
 BENCHMARK_SYMBOL: str = "^GSPC"                 # S&P 500 — used as the performance benchmark
 
 # --- Capital ---
