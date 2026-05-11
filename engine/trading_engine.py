@@ -214,7 +214,8 @@ class TradingEngine:
                     pct_return = (p_next - p_t) / p_t
 
                 position_change = abs(new_position - position)
-                reward = new_position * pct_return - config.IMPACT * position_change
+                avoided_loss = (1 - new_position) * max(0.0, -pct_return)
+                reward = new_position * pct_return + 0.5 * avoided_loss - config.IMPACT * position_change
                 total_reward += reward
                 position = new_position
 

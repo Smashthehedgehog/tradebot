@@ -2717,3 +2717,246 @@
 2026-05-11T18:17:10Z | INFO     | apscheduler.scheduler | Scheduler started
 2026-05-11T18:17:10Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
 2026-05-11T18:17:10Z | INFO     | __main__ | main: scheduler started
+2026-05-11T18:28:13Z | INFO     | __main__ | main: trading bot starting up
+2026-05-11T18:28:13Z | INFO     | __main__ | main: training window 2024-09-18 -> 2026-02-10 | backtest window 2026-02-10 -> 2026-05-11
+2026-05-11T18:28:13Z | INFO     | __main__ | main: --retrain flag set — forcing cold start
+2026-05-11T18:28:13Z | INFO     | model.q_learner | q_learner.reset: Q-table re-initialised
+2026-05-11T18:28:13Z | INFO     | engine.trading_engine | retrain: deleted old Q-table at logs/qtable.pkl
+2026-05-11T18:31:40Z | INFO     | model.q_learner | q_learner.save: Q-table saved to logs/qtable.pkl
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2075.07, have $1002.76
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $74.74, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $662.91, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1837.64, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2022.01, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1320.32, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $75.33, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $758.46, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1848.90, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2029.50, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1320.52, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIOT — need $143.84, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $74.62, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $752.08, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4098.29, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1855.35, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2036.31, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1318.47, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $305.25, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $75.23, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4118.11, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1866.03, have $46.16
+2026-05-11T18:31:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2039.93, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $306.11, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $760.01, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4109.70, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1856.10, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2027.43, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4110.01, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1851.65, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2032.48, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $75.28, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4136.83, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2004.00, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4147.94, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2024.82, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $197.09, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4156.30, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2026.77, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1289.29, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $198.75, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $76.28, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4143.44, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2023.72, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1271.32, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $238.09, have $46.16
+2026-05-11T18:31:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $76.01, have $46.16
+2026-05-11T18:31:51Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1337.94, have $46.16
+2026-05-11T18:31:53Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $710.71, have $46.16
+2026-05-11T18:31:53Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $77.23, have $46.16
+2026-05-11T18:31:53Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2003.20, have $46.16
+2026-05-11T18:31:53Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $231.78, have $46.16
+2026-05-11T18:31:54Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $231.73, have $46.16
+2026-05-11T18:31:57Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4001.30, have $46.16
+2026-05-11T18:31:58Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4001.30, have $46.16
+2026-05-11T18:32:03Z | WARNING  | portfolio.tracker | execute: BUY skipped for COIN — need $1968.57, have $46.16
+2026-05-11T18:32:05Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $183.18, have $46.16
+2026-05-11T18:32:07Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $178.18, have $46.16
+2026-05-11T18:32:16Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $237.69, have $46.16
+2026-05-11T18:32:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $170.37, have $46.16
+2026-05-11T18:32:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for COIN — need $1734.83, have $46.16
+2026-05-11T18:32:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $164.16, have $46.16
+2026-05-11T18:32:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $164.06, have $46.16
+2026-05-11T18:32:27Z | WARNING  | portfolio.tracker | execute: BUY skipped for IONQ — need $281.57, have $46.16
+2026-05-11T18:32:28Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $227.01, have $46.16
+2026-05-11T18:32:34Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2816.41, have $46.16
+2026-05-11T18:32:35Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2830.28, have $46.16
+2026-05-11T18:32:35Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2858.66, have $46.16
+2026-05-11T18:32:36Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $58.51, have $46.16
+2026-05-11T18:32:37Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $250.35, have $46.16
+2026-05-11T18:32:40Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3200.20, have $46.16
+2026-05-11T18:32:40Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3208.71, have $46.16
+2026-05-11T18:32:40Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3229.63, have $46.16
+2026-05-11T18:32:42Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3485.08, have $46.16
+2026-05-11T18:32:42Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3498.29, have $46.16
+2026-05-11T18:32:42Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3524.27, have $46.16
+2026-05-11T18:32:44Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $773.77, have $46.16
+2026-05-11T18:32:50Z | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-11T18:32:50Z | INFO     | apscheduler.scheduler | Added job "TradingScheduler._conditional_cycle" to job store "default"
+2026-05-11T18:32:50Z | INFO     | apscheduler.scheduler | Scheduler started
+2026-05-11T18:32:50Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
+2026-05-11T18:32:50Z | INFO     | __main__ | main: scheduler started
+2026-05-11T18:37:36Z | INFO     | __main__ | main: trading bot starting up
+2026-05-11T18:37:36Z | INFO     | __main__ | main: training window 2024-09-18 -> 2026-02-10 | backtest window 2026-02-10 -> 2026-05-11
+2026-05-11T18:37:36Z | INFO     | __main__ | main: --retrain flag set — forcing cold start
+2026-05-11T18:37:36Z | INFO     | model.q_learner | q_learner.reset: Q-table re-initialised
+2026-05-11T18:37:36Z | INFO     | engine.trading_engine | retrain: deleted old Q-table at logs/qtable.pkl
+2026-05-11T18:39:08Z | INFO     | model.q_learner | q_learner.save: Q-table saved to logs/qtable.pkl
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $142.19, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $654.98, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for IONQ — need $317.42, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2078.08, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1219.92, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $141.25, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $651.70, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2068.67, have $93.35
+2026-05-11T18:39:18Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1220.42, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $141.39, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for IONQ — need $312.51, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2057.66, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1229.33, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $139.64, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $656.11, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for IONQ — need $312.51, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1870.97, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2061.26, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1228.98, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $140.34, have $93.35
+2026-05-11T18:39:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $661.06, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for LCID — need $99.30, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $768.67, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $197.90, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for IONQ — need $326.68, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for LCID — need $103.75, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2072.72, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1326.93, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $759.09, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $197.35, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $679.38, have $93.35
+2026-05-11T18:39:20Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4208.40, have $93.35
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $765.36, have $93.35
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $197.92, have $93.35
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $681.82, have $93.35
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4210.00, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $759.06, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $197.15, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $671.57, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $75.58, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4209.41, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2076.08, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $762.46, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $75.31, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4180.28, have $16.78
+2026-05-11T18:39:21Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2072.62, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $757.05, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $74.42, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2075.07, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $235.99, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $760.26, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $196.35, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $74.77, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1268.77, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $234.23, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $662.91, have $16.78
+2026-05-11T18:39:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $71.92, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1837.64, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2022.01, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1305.35, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1320.32, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $234.93, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $758.46, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $686.34, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $73.22, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1848.90, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2029.50, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1296.29, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1320.52, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $235.18, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $752.08, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $72.87, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4098.29, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1855.35, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2036.31, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1307.31, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1318.47, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $235.44, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $305.25, have $16.78
+2026-05-11T18:39:23Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $73.66, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4118.11, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2039.93, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1299.70, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $234.73, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $306.11, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $73.82, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4109.70, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1856.10, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2027.43, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1290.49, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $165.82, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $233.28, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $695.04, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $73.22, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4110.01, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1851.65, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2032.48, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1288.09, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $164.96, have $16.78
+2026-05-11T18:39:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $233.03, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $699.70, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $73.42, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4136.83, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2004.00, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1295.39, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $234.36, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $302.66, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $778.23, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4147.94, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2024.82, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1298.45, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $166.92, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $768.87, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4156.30, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2026.77, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1391.59, have $16.78
+2026-05-11T18:39:25Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $164.41, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $764.76, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4143.44, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2023.72, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1383.33, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for RIVN — need $163.25, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $300.55, have $16.78
+2026-05-11T18:39:26Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $758.96, have $16.78
+2026-05-11T18:39:29Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1337.94, have $16.78
+2026-05-11T18:39:31Z | WARNING  | portfolio.tracker | execute: BUY skipped for RKLB — need $710.71, have $16.78
+2026-05-11T18:40:13Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $77.13, have $16.78
+2026-05-11T18:40:15Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $76.88, have $16.78
+2026-05-11T18:40:16Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1423.82, have $16.78
+2026-05-11T18:40:17Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1426.42, have $16.78
+2026-05-11T18:40:32Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $226.43, have $16.78
+2026-05-11T18:40:32Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $225.58, have $16.78
+2026-05-11T18:40:33Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $226.23, have $16.78
+2026-05-11T18:40:33Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $225.83, have $16.78
+2026-05-11T18:40:45Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1379.13, have $16.78
+2026-05-11T18:40:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $259.36, have $16.78
+2026-05-11T18:40:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $2020.92, have $16.78
+2026-05-11T18:40:51Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $78.68, have $16.78
+2026-05-11T18:40:51Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $290.44, have $16.78
+2026-05-11T18:40:51Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $270.37, have $16.78
+2026-05-11T18:40:59Z | WARNING  | portfolio.tracker | execute: BUY skipped for COIN — need $1923.37, have $16.78
+2026-05-11T18:41:03Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $159.01, have $16.78
+2026-05-11T18:41:03Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $159.31, have $16.78
+2026-05-11T18:41:03Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOFI — need $159.16, have $16.78
+2026-05-11T18:41:05Z | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-11T18:41:05Z | INFO     | apscheduler.scheduler | Added job "TradingScheduler._conditional_cycle" to job store "default"
+2026-05-11T18:41:05Z | INFO     | apscheduler.scheduler | Scheduler started
+2026-05-11T18:41:05Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
+2026-05-11T18:41:05Z | INFO     | __main__ | main: scheduler started
