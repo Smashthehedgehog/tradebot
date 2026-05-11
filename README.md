@@ -53,8 +53,9 @@ need to re-study every time you restart the bot.
 
 After studying, the bot is tested on the final 90 days of that same data —
 days it has never seen before. It trades as if those days were live and reports
-its score: how much money it would have made or lost, how often it traded, and
-how it compared to simply buying and holding the S&P 500 index for those 90 days.
+its score: total return vs. the S&P 500, average daily gain/loss, volatility,
+annualised Sharpe ratio, maximum drawdown, number of trades, and final portfolio
+value.
 
 ### Phase 3 — Live Decisions (Every Hour)
 
@@ -86,16 +87,16 @@ A **situation** is defined by three things:
 
 ---
 
-## The Three Market Signals (Indicators)
+## The Four Market Signals (Indicators)
 
-The bot watches three independent signals to understand what the market is doing.
+The bot watches four independent signals to understand what the market is doing.
 Think of each one as a different expert giving their opinion.
 
 ### Signal 1 — Price vs. Average (SMA Ratio)
 > *"Is this stock unusually cheap or unusually expensive compared to its recent
 > average?"*
 
-The bot computes a 20-hour rolling average of the stock price and compares the
+The bot computes a 40-hour rolling average of the stock price and compares the
 current price to it. If the price is significantly below average, the expert
 votes **Buy** (mean-reversion opportunity). If significantly above, it votes
 **Sell**. Otherwise, it stays neutral.
@@ -114,12 +115,22 @@ This signal compares two moving averages of different speeds to detect momentum
 shifts. When short-term momentum is stronger than long-term momentum, this expert
 votes **Buy**. When it weakens, it votes **Sell**.
 
+### Signal 4 — Relative Strength Index (RSI)
+> *"Is this stock's recent momentum so extreme that a reversal is likely?"*
+
+RSI measures the ratio of average gains to average losses over the past 14 hours.
+Values near 0 mean the stock has been falling relentlessly (oversold — this expert
+votes **Buy**). Values near 100 mean it has been rising relentlessly (overbought —
+votes **Sell**). RSI catches short-term exhaustion faster than MACD and
+complements the Bollinger %B signal by providing both price-envelope and
+momentum perspectives simultaneously.
+
 ---
 
 ## Self-Improvement — How the Bot Tunes Itself
 
-Each of the three signals has a **weight** — essentially how much influence that
-expert's opinion carries in the final decision. Weights start equal (one-third
+Each of the four signals has a **weight** — essentially how much influence that
+expert's opinion carries in the final decision. Weights start equal (one-quarter
 each), but the bot adjusts them automatically every hour based on recent
 performance:
 
@@ -151,6 +162,15 @@ Key settings:
 - How many shares to buy per order
 - How far back to study (up to 730 days)
 - How many days to hold back for practice testing (default 90)
+- `TRADE_MODE` — set to `"long_only"` (default) to restrict the bot to buying
+  and exiting to flat; change to `"long_short"` only if your brokerage supports
+  shorting
+- `RSI_WINDOW` — lookback period for the RSI signal (default 14 hourly bars,
+  roughly 2 trading days)
+- Email notification settings (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`,
+  `SMTP_PASS`, `NOTIFY_EMAIL`) — leave blank to disable; when configured, the
+  bot sends an email after every completed training run, backtest, and hourly
+  cycle, and immediately on any ERROR-level log event
 
 ---
 
@@ -178,16 +198,16 @@ this contract.
 
 ---
 
-### `indicators/technical.py` — The Three Experts
-Contains the actual code for the SMA Ratio, Bollinger Band, and MACD signals
-described above. Each one reads price history and produces its vote. Adding a
-new signal (e.g. news sentiment) means adding a new class here — nothing else
-needs to change.
+### `indicators/technical.py` — The Four Experts
+Contains the actual code for the SMA Ratio, Bollinger Band, MACD, and RSI
+signals described above. Each one reads price history and produces its vote.
+Adding a new signal (e.g. news sentiment) means adding a new class here —
+nothing else needs to change.
 
 ---
 
 ### `model/predictor_manager.py` — The Voting Coordinator
-Holds all three signals and manages their weights. When a decision needs to be
+Holds all four signals and manages their weights. When a decision needs to be
 made, it asks each signal for its vote, multiplies each vote by its weight, and
 combines them into a single number between -1 (strong sell) and +1 (strong buy).
 It also records whether each signal was right or wrong after each hour, which
@@ -204,11 +224,11 @@ This is the self-improvement loop.
 ---
 
 ### `model/state_encoder.py` — The Situation Summarizer
-Takes the three continuous signal values and the bot's current position
-(holding, shorting, or flat) and compresses them into a single code number. That
-number is used to look up the best action in the bot's learned playbook. During
-training, it also figures out the "bins" (ranges of values) that group similar
-market situations together — like sorting temperatures into cold, mild, warm, hot.
+Takes the four continuous signal values and the bot's current position
+(holding or flat) and compresses them into a single code number. That number is
+used to look up the best action in the bot's learned playbook. During training,
+it also figures out the "bins" (ranges of values) that group similar market
+situations together — like sorting temperatures into cold, mild, warm, hot.
 
 ---
 
@@ -251,9 +271,13 @@ The central coordinator that runs everything in the right order. It:
 
 ### `engine/scheduler.py` — The Alarm Clock
 Uses a background timer to wake the bot up every 60 minutes. Before running a
-decision cycle, it checks whether the market is currently open (weekdays,
-9 AM – 4 PM Eastern). If the market is closed, it goes back to sleep without
-doing anything.
+decision cycle, it checks whether the NYSE is currently open using the official
+`pandas_market_calendars` library, which accounts for weekends and US market
+holidays. The first cycle fires at 10 AM Eastern (ensuring the 9:30 opening bar
+is complete and available from Yahoo Finance) and runs through 4 PM Eastern. If
+the market is closed or it is a holiday, it goes back to sleep without doing
+anything. If the calendar library is unavailable it falls back to a simple
+weekday/hour check.
 
 ---
 
@@ -263,8 +287,29 @@ never studied) and measures how well it would have done. It reports:
 - Total return vs. the S&P 500 benchmark
 - Average daily gain/loss
 - Volatility of daily returns
+- Annualised Sharpe ratio
+- Maximum drawdown (largest peak-to-trough decline)
 - Total number of trades made
 - Final portfolio value
+
+It also supports **walk-forward validation** (`--walk-forward` flag): instead of
+a single 90-day test, the bot runs 4 independent test windows of 45 days each,
+re-training from scratch before each one. This gives a far more reliable picture
+of whether the model generalises to unseen data.
+
+---
+
+### `notifications/emailer.py` — The Alert System
+Sends plain-text email notifications via SMTP when key events happen:
+- Training complete (with epoch count, final reward, and elapsed time)
+- Backtest complete (with all metrics)
+- Each hourly cycle complete (with any trades made and current weights)
+- Any ERROR-level log event (subject line includes the error message)
+
+Email is entirely opt-in. Leave `SMTP_USER` or `NOTIFY_EMAIL` blank in
+`config.py` and the module silently no-ops — it is always safe to call. When
+enabled, it works with Gmail App Passwords, SendGrid, or any STARTTLS-capable
+SMTP server.
 
 ---
 
@@ -278,7 +323,8 @@ bot is running:
 | Is the bot trained and is the market open? | Yes/No status |
 | What is the portfolio worth right now? | Cash, holdings, profit/loss |
 | Which signals are most trusted right now? | Current weights and accuracy scores |
-| What trades has the bot made so far? | Full history, filterable by stock |
+| What trades has the bot made so far? | Full history (all symbols) |
+| What trades has the bot made for one stock? | History filtered to that symbol |
 | Retrain the bot on a new date range | Starts retraining in the background |
 | Manually adjust a signal's weight | Applies immediately |
 
@@ -310,9 +356,9 @@ During **studying**, you see progress updates every epoch (training round):
 
 During **live trading**, every hourly decision prints like this:
 ```
-[TRADE] 2026-04-27 10:00:00 ET | AAPL  | BUY  | 10 shares @ $213.45 | Cash: $97,865.50 | Reason: Weighted signal +0.72 (SMA:+1 BB:+1 MACD:0)
-[TRADE] 2026-04-27 10:00:00 ET | MSFT  | HOLD |  0 shares @ $425.10 | Cash: $97,865.50 | Reason: Weighted signal +0.05 (SMA:0 BB:+1 MACD:-1)
-[TRADE] 2026-04-27 10:00:00 ET | GOOG  | SELL | 10 shares @ $178.90 | Cash: $97,865.50 | Reason: Weighted signal -0.61 (SMA:-1 BB:-1 MACD:0)
+[TRADE] 2026-04-27 10:00:00 ET | AAPL   | BUY  |    10 shares @    $213.45 | Cash:   $97,865.50 | Reason: Weighted signal +0.72 (SMARatio:+1 BollingerPercentB:+1 MACDHistogram:0 RSI:+1)
+[TRADE] 2026-04-27 10:00:00 ET | MSFT   | HOLD |     0 shares @    $425.10 | Cash:   $97,865.50 | Reason: Weighted signal +0.05 (SMARatio:0 BollingerPercentB:+1 MACDHistogram:-1 RSI:0)
+[TRADE] 2026-04-27 10:00:00 ET | GOOG   | SELL |    10 shares @    $178.90 | Cash:   $97,865.50 | Reason: Weighted signal -0.61 (SMARatio:-1 BollingerPercentB:-1 MACDHistogram:0 RSI:-1)
 [CYCLE] 2026-04-27 10:00:00 ET | Portfolio: $101,234.80
 ```
 
@@ -332,7 +378,50 @@ headlines or earnings reports) requires touching only two things:
 
 The coordinator, weight system, brain, and API all pick it up automatically.
 You then retrain, and the bot will learn how much to trust the new signal
-relative to the existing three.
+relative to the existing four.
+
+---
+
+## How to Run
+
+### Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### First run — train from scratch and start the server
+```bash
+python main.py --retrain
+```
+Downloads up to 600 days of hourly price bars, runs the Q-learning training
+loop, saves the Q-table to `logs/qtable.pkl`, runs the 90-day backtest, then
+starts the scheduler and web API at `http://localhost:8000`.
+
+### Subsequent runs — load the saved Q-table and skip training
+```bash
+python main.py
+```
+
+### Validate model quality without starting the server
+```bash
+python main.py --backtest-only
+```
+Trains (or loads), runs the backtest, prints all metrics to stdout, then exits.
+
+### Run walk-forward validation (4 independent test windows)
+```bash
+python main.py --walk-forward
+```
+Re-trains and tests on 4 separate 45-day windows instead of one. Exits after
+printing per-fold and summary results. More reliable than a single backtest.
+
+### Retrain on a custom date range
+```bash
+python main.py --retrain --train-start 2023-01-01 --train-end 2024-10-01
+```
+
+API docs are auto-generated at `http://localhost:8000/docs` while the server
+is running.
 
 ---
 
