@@ -2706,3 +2706,14 @@
 2026-05-06T08:58:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for AAPL — need $2770.47, have $438.36
 2026-05-06T08:58:24Z | WARNING  | portfolio.tracker | execute: BUY skipped for GOOG — need $3846.54, have $438.36
 2026-05-06T08:58:24Z | INFO     | __main__ | main: --backtest-only flag set — exiting after backtest
+2026-05-11T18:16:43Z | INFO     | __main__ | main: trading bot starting up
+2026-05-11T18:16:43Z | INFO     | __main__ | main: training window 2024-09-18 -> 2026-02-10 | backtest window 2026-02-10 -> 2026-05-11
+2026-05-11T18:16:43Z | INFO     | __main__ | main: --retrain flag set — forcing cold start
+2026-05-11T18:16:43Z | INFO     | model.q_learner | q_learner.reset: Q-table re-initialised
+2026-05-11T18:16:43Z | INFO     | engine.trading_engine | retrain: deleted old Q-table at logs/qtable.pkl
+2026-05-11T18:16:58Z | INFO     | model.q_learner | q_learner.save: Q-table saved to logs/qtable.pkl
+2026-05-11T18:17:10Z | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-11T18:17:10Z | INFO     | apscheduler.scheduler | Added job "TradingScheduler._conditional_cycle" to job store "default"
+2026-05-11T18:17:10Z | INFO     | apscheduler.scheduler | Scheduler started
+2026-05-11T18:17:10Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
+2026-05-11T18:17:10Z | INFO     | __main__ | main: scheduler started

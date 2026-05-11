@@ -2,6 +2,10 @@
 # Single source of truth for all tunable constants.
 # No magic numbers anywhere else in the codebase — always import from here.
 
+from dotenv import dotenv_values
+
+_env = dotenv_values()
+
 # --- Symbols ---
 SYMBOLS: list[str] = ["AAPL", "MSFT", "GOOG"]  # Stocks the model trades
 BENCHMARK_SYMBOL: str = "^GSPC"                 # S&P 500 — used as the performance benchmark
@@ -79,11 +83,11 @@ QTABLE_PATH: str = "logs/qtable.pkl"  # File path where the trained Q-table and 
                                        # are saved after training and loaded on warm start
 
 # --- Email notifications ---
-# Leave SMTP_USER or NOTIFY_EMAIL blank to disable email entirely (safe default).
-# For Gmail: enable 2-factor auth, generate an App Password, use smtp.gmail.com:587.
-# For SendGrid: use smtp.sendgrid.net:587, SMTP_USER="apikey", SMTP_PASS=<api_key>.
-SMTP_HOST: str = ""          # SMTP server hostname, e.g. "smtp.gmail.com"
-SMTP_PORT: int = 587         # Standard STARTTLS port
-SMTP_USER: str = ""          # Sender email address / SMTP login username
-SMTP_PASS: str = ""          # SMTP password or app-specific password
-NOTIFY_EMAIL: str = ""       # Recipient address for all bot notifications
+# Credentials are read from environment variables so they are never stored in
+# the codebase. Set these in /etc/tradebot.env on EC2 (see README for details).
+# Leave SMTP_USER or NOTIFY_EMAIL unset to disable email entirely (safe default).
+SMTP_HOST: str = _env.get("SMTP_HOST", "")         # e.g. "smtp.gmail.com"
+SMTP_PORT: int = int(_env.get("SMTP_PORT", "587"))  # Standard STARTTLS port
+SMTP_USER: str = _env.get("SMTP_USER", "")         # Sender address / SMTP login
+SMTP_PASS: str = _env.get("SMTP_PASS", "")         # App password or SMTP password
+NOTIFY_EMAIL: str = _env.get("NOTIFY_EMAIL", "")   # Recipient address
