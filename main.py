@@ -25,15 +25,41 @@ from model.weight_updater import WeightUpdater
 from portfolio.tracker import PortfolioTracker
 
 
+class _Tee:
+    """Mirrors every write to sys.stdout into a log file simultaneously."""
+
+    def __init__(self, terminal, log_file):
+        self._terminal = terminal
+        self._log_file = log_file
+
+    def write(self, data: str) -> None:
+        self._terminal.write(data)
+        self._log_file.write(data)
+
+    def flush(self) -> None:
+        self._terminal.flush()
+        self._log_file.flush()
+
+    def fileno(self) -> int:
+        return self._terminal.fileno()
+
+
 def _configure_logging() -> None:
     """
     Configure the root logger to write to both stdout and a rotating log file.
+
+    All output — both logger records and bare print() calls — is also mirrored
+    to logs/console.log via a _Tee so the full console history is preserved on
+    disk for later inspection.
 
     Log records are emitted in a structured format that includes timestamp,
     level, logger name, and message. The file handler rotates at 10 MB and
     keeps 5 backups so the logs/ directory does not grow unbounded.
     """
     os.makedirs("logs", exist_ok=True)
+
+    console_log = open("logs/console.log", "a", encoding="utf-8", buffering=1)
+    sys.stdout = _Tee(sys.__stdout__, console_log)
 
     fmt = logging.Formatter(
         fmt="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
@@ -48,9 +74,7 @@ def _configure_logging() -> None:
     )
     file_handler.setFormatter(fmt)
 
-    stream_handler = logging.StreamHandler(
-        open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, closefd=False)
-    )
+    stream_handler = logging.StreamHandler(sys.stdout)
     stream_handler.setFormatter(fmt)
 
     root = logging.getLogger()

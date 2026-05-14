@@ -17,9 +17,6 @@ from portfolio.tracker import PortfolioTracker
 
 logger = logging.getLogger(__name__)
 
-# Map holding shares -> holding index used by the state encoder
-_HOLDING_IDX = {True: 1, False: 0}  # long=1, flat/short=0 (simplified for live)
-
 
 class TradingEngine:
     """
@@ -143,15 +140,23 @@ class TradingEngine:
             f" Epochs: {epoch} | Final reward: {best_reward:.4f} | Elapsed: {elapsed:.1f}s"
         )
 
+        early_stopped = patience_counter >= config.EARLY_STOP_PATIENCE
+        bars_str = "\n".join(
+            f"  {sym}: {len(price_data[sym]):,} bars"
+            for sym in self.symbols if sym in price_data
+        )
         from notifications.emailer import send_email
         send_email(
             subject="[TradingBot] Training Complete",
             body=(
                 f"Training complete.\n"
-                f"Window:       {train_start} -> {train_end}\n"
-                f"Epochs:       {epoch}\n"
-                f"Final reward: {best_reward:.4f}\n"
-                f"Elapsed:      {elapsed:.1f}s"
+                f"Window:        {train_start} -> {train_end}\n"
+                f"Symbols ({len(self.symbols)}): {', '.join(self.symbols)}\n"
+                f"Epochs:        {epoch}/{config.MAX_EPOCHS}"
+                f" ({'early stop' if early_stopped else 'full run'})\n"
+                f"Final reward:  {best_reward:.4f}\n"
+                f"Elapsed:       {elapsed:.1f}s\n\n"
+                f"Bars fetched per symbol:\n{bars_str}"
             ),
         )
 
@@ -364,6 +369,7 @@ class TradingEngine:
             1 for h in self.tracker.history if h["action"] != "HOLD"
         )
         current_prices: dict[str, float] = {}
+        cycle_decisions: list[dict] = []
 
         for symbol in self.symbols:
             try:
@@ -401,6 +407,14 @@ class TradingEngine:
                 )
                 reason = f"Weighted signal {weighted:+.2f} ({signals_str})"
                 self.tracker.execute(symbol, action, shares, current_price, reason)
+                cycle_decisions.append({
+                    "symbol": symbol,
+                    "action": action,
+                    "shares": shares,
+                    "price": current_price,
+                    "weighted": weighted,
+                    "signals": signals,
+                })
 
             except Exception as exc:
                 logger.error("run_cycle: error processing %s — %s", symbol, exc, exc_info=True)
@@ -425,13 +439,30 @@ class TradingEngine:
             )
             if new_trades else "  (no trades this cycle)"
         )
+        pnl = total - config.STARTING_CASH
+        pnl_pct = (pnl / config.STARTING_CASH) * 100 if config.STARTING_CASH else 0.0
+        open_positions = [
+            f"  {sym}: {self.tracker.holdings.get(sym, 0)} shares"
+            f" @ ${current_prices.get(sym, 0):.2f}"
+            f" = ${self.tracker.holdings.get(sym, 0) * current_prices.get(sym, 0):.2f}"
+            for sym in self.symbols if self.tracker.holdings.get(sym, 0) > 0
+        ]
+        positions_str = "\n".join(open_positions) if open_positions else "  (no open positions)"
+        decisions_str = "\n".join(
+            f"  {d['symbol']:<6} {d['action']:<4} {d['shares']:>4} shares"
+            f" @ ${d['price']:>8.2f} | Signal {d['weighted']:+.2f}"
+            for d in cycle_decisions
+        )
         from notifications.emailer import send_email
         send_email(
             subject=f"[TradingBot] Cycle {ts}",
             body=(
-                f"Cycle complete: {ts}\n"
-                f"Portfolio: ${total:,.2f}\n\n"
-                f"Trades:\n{trades_str}\n\n"
-                f"Weights: {weights_str}"
+                f"Cycle: {ts}\n"
+                f"Portfolio: ${total:,.2f}  |  Cash: ${self.tracker.cash:,.2f}\n"
+                f"P&L: ${pnl:+,.2f} ({pnl_pct:+.2f}%)\n\n"
+                f"Open positions:\n{positions_str}\n\n"
+                f"All decisions this cycle:\n{decisions_str}\n\n"
+                f"New trades:\n{trades_str}\n\n"
+                f"Signal weights: {weights_str}"
             ),
         )

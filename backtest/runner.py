@@ -119,17 +119,22 @@ def run_backtest(engine, test_start: str, test_end: str) -> dict:
         final_value=final_value,
     )
 
+    alpha = cumulative_return - benchmark_return
     from notifications.emailer import send_email
     send_email(
         subject="[TradingBot] Backtest Complete",
         body=(
-            f"Backtest window: {test_start} -> {test_end}\n"
-            f"Final value:     ${final_value:,.2f}\n"
-            f"Cumulative:      {cumulative_return * 100:+.2f}%\n"
-            f"Benchmark:       {benchmark_return * 100:+.2f}%\n"
-            f"Sharpe ratio:    {sharpe:.3f}\n"
-            f"Max drawdown:    {max_drawdown * 100:.2f}%\n"
-            f"Trades:          {num_trades}"
+            f"Backtest window:  {test_start} -> {test_end}\n"
+            f"Symbols:          {', '.join(config.SYMBOLS)}\n\n"
+            f"Final value:      ${final_value:,.2f}\n"
+            f"Cumulative:       {cumulative_return * 100:+.2f}%\n"
+            f"Benchmark S&P500: {benchmark_return * 100:+.2f}%\n"
+            f"Alpha:            {alpha * 100:+.2f}%\n\n"
+            f"Mean daily:       {mean_daily * 100:+.4f}%\n"
+            f"Std daily:        {std_daily * 100:.4f}%\n"
+            f"Sharpe ratio:     {sharpe:.3f}\n"
+            f"Max drawdown:     {max_drawdown * 100:.2f}%\n"
+            f"Total trades:     {num_trades}"
         ),
     )
 
@@ -216,14 +221,25 @@ def run_walk_forward(
     print(f"  Avg Sharpe ratio       : {avg_sharpe:>10.3f}")
     print("=" * 55 + "\n")
 
+    fold_lines = "\n".join(
+        f"  Fold {r['fold']}: return {r['cumulative_return']:+.2f}%"
+        f" | benchmark {r['benchmark_cumulative_return']:+.2f}%"
+        f" | alpha {r['cumulative_return'] - r['benchmark_cumulative_return']:+.2f}%"
+        f" | Sharpe {r.get('sharpe_ratio', 0.0):.3f}"
+        f" | trades {r.get('num_trades', 0)}"
+        for r in results
+    )
     from notifications.emailer import send_email
     send_email(
         subject="[TradingBot] Walk-Forward Validation Complete",
         body=(
-            f"Walk-forward: {n_folds} folds, {test_window_days}-day test windows\n"
-            f"Avg return:   {avg_return:+.2f}%\n"
-            f"Avg benchmark:{avg_benchmark:+.2f}%\n"
-            f"Avg Sharpe:   {avg_sharpe:.3f}"
+            f"Walk-forward: {n_folds} folds, {test_window_days}-day test windows\n\n"
+            f"Per-fold results:\n{fold_lines}\n\n"
+            f"Averages:\n"
+            f"  Return:    {avg_return:+.2f}%\n"
+            f"  Benchmark: {avg_benchmark:+.2f}%\n"
+            f"  Alpha:     {avg_return - avg_benchmark:+.2f}%\n"
+            f"  Sharpe:    {avg_sharpe:.3f}"
         ),
     )
 
