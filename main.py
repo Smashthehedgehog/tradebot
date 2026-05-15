@@ -43,6 +43,9 @@ class _Tee:
     def fileno(self) -> int:
         return self._terminal.fileno()
 
+    def isatty(self) -> bool:
+        return self._terminal.isatty()
+
 
 def _configure_logging() -> None:
     """

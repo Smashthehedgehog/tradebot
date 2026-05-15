@@ -3077,3 +3077,57 @@
 2026-05-13T22:32:15Z | WARNING  | portfolio.tracker | execute: BUY skipped for COIN — need $1659.56, have $6.96
 2026-05-13T22:32:29Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $58.51, have $6.96
 2026-05-13T22:32:37Z | WARNING  | portfolio.tracker | execute: BUY skipped for HOOD — need $773.77, have $6.96
+2026-05-15T10:55:48Z | INFO     | __main__ | main: trading bot starting up
+2026-05-15T10:55:48Z | INFO     | __main__ | main: training window 2024-09-22 -> 2026-02-14 | backtest window 2026-02-14 -> 2026-05-15
+2026-05-15T10:55:48Z | INFO     | __main__ | main: --retrain flag set — forcing cold start
+2026-05-15T10:55:48Z | INFO     | model.q_learner | q_learner.reset: Q-table re-initialised
+2026-05-15T10:55:48Z | INFO     | engine.trading_engine | retrain: deleted old Q-table at logs/qtable.pkl
+2026-05-15T10:58:00Z | INFO     | model.q_learner | q_learner.save: Q-table saved to logs/qtable.pkl
+2026-05-15T10:59:31Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2807.50, have $495.94
+2026-05-15T10:59:31Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2816.16, have $495.94
+2026-05-15T10:59:31Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2845.19, have $495.94
+2026-05-15T10:59:32Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2847.04, have $495.94
+2026-05-15T10:59:38Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3396.89, have $328.37
+2026-05-15T10:59:38Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3434.53, have $328.37
+2026-05-15T10:59:42Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $3577.17, have $208.45
+2026-05-15T10:59:45Z | WARNING  | portfolio.tracker | execute: BUY skipped for SOUN — need $97.05, have $46.64
+2026-05-15T10:59:46Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $57.71, have $46.64
+2026-05-15T10:59:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $54.00, have $46.64
+2026-05-15T10:59:49Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $53.70, have $46.64
+2026-05-15T10:59:50Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $53.50, have $46.64
+2026-05-15T10:59:51Z | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-15T10:59:51Z | INFO     | apscheduler.scheduler | Added job "TradingScheduler._conditional_cycle" to job store "default"
+2026-05-15T10:59:51Z | INFO     | apscheduler.scheduler | Scheduler started
+2026-05-15T10:59:51Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
+2026-05-15T10:59:51Z | INFO     | __main__ | main: scheduler started
+2026-05-15T11:05:23Z | INFO     | __main__ | main: trading bot starting up
+2026-05-15T11:05:23Z | INFO     | __main__ | main: training window 2024-09-22 -> 2026-02-14 | backtest window 2026-02-14 -> 2026-05-15
+2026-05-15T11:05:23Z | INFO     | __main__ | main: --retrain flag set — forcing cold start
+2026-05-15T11:05:23Z | INFO     | model.q_learner | q_learner.reset: Q-table re-initialised
+2026-05-15T11:05:23Z | INFO     | engine.trading_engine | retrain: deleted old Q-table at logs/qtable.pkl
+2026-05-15T11:06:25Z | INFO     | model.q_learner | q_learner.save: Q-table saved to logs/qtable.pkl
+2026-05-15T11:06:40Z | WARNING  | portfolio.tracker | execute: BUY skipped for TSLA — need $4178.07, have $859.10
+2026-05-15T11:06:55Z | WARNING  | portfolio.tracker | execute: BUY skipped for MSTR — need $1423.82, have $69.81
+2026-05-15T11:06:56Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1507.81, have $69.81
+2026-05-15T11:06:56Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1787.24, have $69.81
+2026-05-15T11:06:58Z | WARNING  | portfolio.tracker | execute: BUY skipped for AMD — need $2047.95, have $69.81
+2026-05-15T11:06:59Z | WARNING  | portfolio.tracker | execute: BUY skipped for PLTR — need $1549.35, have $69.81
+2026-05-15T11:07:00Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $237.69, have $69.81
+2026-05-15T11:07:00Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $238.04, have $69.81
+2026-05-15T11:07:01Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $224.47, have $69.81
+2026-05-15T11:07:01Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $225.12, have $69.81
+2026-05-15T11:07:01Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $220.97, have $69.81
+2026-05-15T11:07:01Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $221.02, have $69.81
+2026-05-15T11:07:02Z | WARNING  | portfolio.tracker | execute: BUY skipped for SMCI — need $217.77, have $69.81
+2026-05-15T11:07:05Z | WARNING  | portfolio.tracker | execute: BUY skipped for NVDA — need $1763.76, have $69.81
+2026-05-15T11:07:07Z | WARNING  | portfolio.tracker | execute: BUY skipped for SNAP — need $46.35, have $23.71
+2026-05-15T11:07:08Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $87.64, have $23.71
+2026-05-15T11:07:17Z | WARNING  | portfolio.tracker | execute: BUY skipped for MARA — need $112.76, have $23.71
+2026-05-15T11:07:19Z | WARNING  | portfolio.tracker | execute: BUY skipped for WOLF — need $267.47, have $23.71
+2026-05-15T11:07:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $249.79, have $23.71
+2026-05-15T11:07:22Z | WARNING  | portfolio.tracker | execute: BUY skipped for GME — need $249.75, have $23.71
+2026-05-15T11:07:39Z | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-15T11:07:39Z | INFO     | apscheduler.scheduler | Added job "TradingScheduler._conditional_cycle" to job store "default"
+2026-05-15T11:07:39Z | INFO     | apscheduler.scheduler | Scheduler started
+2026-05-15T11:07:39Z | INFO     | engine.scheduler | scheduler.start: firing every 60 min during market hours
+2026-05-15T11:07:39Z | INFO     | __main__ | main: scheduler started
